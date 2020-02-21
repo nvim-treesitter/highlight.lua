@@ -62,6 +62,7 @@ end
 
 local filetypes = {
     lua = function() require 'highlighters/lua'.highlight(colors) end,
+    js = function() require 'highlighters/javascript'.highlight(colors) end,
 }
 
 local function run()
@@ -81,8 +82,6 @@ local function run()
         highlighter()
     end
 end
-
--- run()
 
 return { run = run }
 
