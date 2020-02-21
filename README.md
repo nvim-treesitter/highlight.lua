@@ -19,7 +19,8 @@ It can be used by those who need better syntax coloring in their neovim environm
 - attach the logic to the buffer
 - refactor using metatables instead of closures
 - detect if parser exists
-- finish js colors
+- display syntax errors in red
+- finish basic js/x colors for demo
 - option / command to disable the plugin
 - command to handle parser download / build
 - find a way to clear the colors from other syntax plugins

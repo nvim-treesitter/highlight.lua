@@ -9,7 +9,7 @@ local function get_process_node(buf, definitions, color_lang)
         if highlight_group == nil then
             print(node_type)
             return
-        elseif highlight_group == 'skip' then
+        elseif highlight_group == '' then
             return
         end
 

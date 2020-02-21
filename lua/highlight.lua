@@ -106,7 +106,7 @@ local function detach()
 
     for i, handle in pairs(buffer_handles) do
         if buf == handle then
-            api.nvim_buf_detach(buf)
+            -- api.nvim_buf_detach(buf)
             table.remove(buffer_handles, i)
             break
         end
@@ -117,4 +117,3 @@ return {
     attach = attach,
     detach = detach
 }
-
