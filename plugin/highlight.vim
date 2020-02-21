@@ -3,8 +3,8 @@ if exists('g:loaded_highlight') | finish | endif
 let s:save_cpo = &cpo
 set cpo&vim
 
-" TODO: not sure about BufAdd
-au BufAdd * lua require 'highlight'.run()
+au BufWinEnter * lua require 'highlight'.attach()
+au BufWinLeave * lua require 'highlight'.detach()
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

@@ -6,8 +6,16 @@ local has = nvim.has
 local exists = nvim.exists
 local echo_err = nvim.echo_err
 
-local HAS_GUI_COLORS = has('termguicolors')
-local HAS_COLORS = true
+local define_colors = require 'lib/color_utils'.define_colors
+local attach_to_buffer = require 'lib/runner'.attach_to_buffer
+
+if not has('termguicolors') then
+    echo_err('termguicolors must be set to use this plugin')
+    return {
+        attach = function() end,
+        detach = function() end
+    }
+end
 
 local colorlist = {
     'g:terminal_color_0',
@@ -30,58 +38,83 @@ local colorlist = {
 
 for _, color in pairs(colorlist) do
     if not exists(color) then
-        HAS_COLORS = false
-        break
+        echo_err(color..' must be set to use this plugin')
+        return {
+            attach = function() end,
+            detach = function() end
+        }
     end
 end
 
-local colors = {}
-
-if HAS_COLORS and HAS_GUI_COLORS then
-    colors = {
-        black = get('terminal_color_0'), 
-        red = get('terminal_color_1'), 
-        green = get('terminal_color_2'), 
-        yellow = get('terminal_color_3'), 
-        blue = get('terminal_color_4'), 
-        purple = get('terminal_color_5'), 
-        cyan = get('terminal_color_6'), 
-        white = get('terminal_color_7'), 
-        visual_grey = get('terminal_color_8'), 
-        dark_red = get('terminal_color_9'), 
-        dark_green = get('terminal_color_10'), 
-        dark_yellow = get('terminal_color_11'), 
-        dark_blue = get('terminal_color_12'), 
-        dark_purple = get('terminal_color_13'), 
-        dark_cyan = get('terminal_color_14'), 
-        comment_grey = get('terminal_color_15'), 
-        fg = get('terminal_color_0'),
-        bg = get('terminal_color_7')
-    }
-end
-
-local filetypes = {
-    lua = function() require 'highlighters/lua'.highlight(colors) end,
-    js = function() require 'highlighters/javascript'.highlight(colors) end,
+local colors = {
+    black = get('terminal_color_0'), 
+    red = get('terminal_color_1'), 
+    green = get('terminal_color_2'), 
+    yellow = get('terminal_color_3'), 
+    blue = get('terminal_color_4'), 
+    purple = get('terminal_color_5'), 
+    cyan = get('terminal_color_6'), 
+    white = get('terminal_color_7'), 
+    visual_grey = get('terminal_color_8'), 
+    dark_red = get('terminal_color_9'), 
+    dark_green = get('terminal_color_10'), 
+    dark_yellow = get('terminal_color_11'), 
+    dark_blue = get('terminal_color_12'), 
+    dark_purple = get('terminal_color_13'), 
+    dark_cyan = get('terminal_color_14'), 
+    comment_grey = get('terminal_color_15'), 
+    fg = get('terminal_color_7'),
+    bg = get('terminal_color_0')
 }
 
-local function run()
-    if not HAS_GUI_COLORS then
-        return echo_err('termguicolors must be set to use this plugin')
+local filetypes = {
+    js = require 'syntax/javascript'.get_attributes
+}
+
+local buffer_handles = {}
+
+local function attach()
+    local buf = api.nvim_win_get_buf(0)
+
+    for i, handle in pairs(buffer_handles) do
+        if buf == handle then return end
     end
 
-    if not HAS_COLORS then
-        return echo_err('g:terminal_color_x must be set to use this plugin')
-    end
+    local name = api.nvim_buf_get_name(buf)
+    if name == nil then return end
 
-    local name = api.nvim_buf_get_name(0)
-    local ext = string.sub(string.match(name, '%.[^%./]*$'), 2, -1)
-    local highlighter = filetypes[ext]
-    if highlighter ~= nil then
-        api.nvim_buf_clear_namespace(0, -1, 0, -1)
-        highlighter()
+    local ext = string.match(name, '%.[^%./]*$')
+    if ext == nil then return end
+
+    ext = string.sub(ext, 2, -1)
+    local get_attr = filetypes[ext]
+
+    -- TODO: check if parser exists
+    if get_attr ~= nil then
+        api.nvim_buf_clear_namespace(buf, -1, 0, -1) -- doesnt seem to work
+
+        local attributes = get_attr(colors)
+        define_colors(attributes.highlight_groups, attributes.color_lang)
+
+        attach_to_buffer(buf, attributes)
+        table.insert(buffer_handles, buf)
     end
 end
 
-return { run = run }
+local function detach()
+    local buf = api.nvim_win_get_buf(0)
+
+    for i, handle in pairs(buffer_handles) do
+        if buf == handle then
+            api.nvim_buf_detach(buf)
+            table.remove(buffer_handles, i)
+            break
+        end
+    end
+end
+
+return {
+    attach = attach,
+    detach = detach
+}
 
