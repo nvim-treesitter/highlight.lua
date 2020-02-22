@@ -12,20 +12,25 @@ It can be used by those who need better syntax coloring in their neovim environm
 ### Notice
 
 - requires neovim v0.5
-- Is not usable in the current state
+- Is usable in the current state to TEST and develop (only js filetypes are supported ATM)
 
 ### TODO
 
-- attach the logic to the buffer
-- refactor using metatables instead of closures
 - detect if parser exists
-- display syntax errors in red
-- finish basic js/x colors for demo
-- option / command to disable the plugin
+- find a way to get all the tokens returned by a parser easily (so we should not do it by hand)
+- find a way to display properly syntax errors (not working ATM)
+- option / command to disable the plugin (can get very slow on huge files)
 - command to handle parser download / build
-- find a way to clear the colors from other syntax plugins
 - init colors for languages only once
-- maybe handle filetype in a better way
+- handle filetype in a better way
+
+### TODO PERF
+
+- try to do multithreading with luv callbacks instead of doing async rendering (doesnt work great)
+- implement async rendering correctly (right now its not really great, still blocking when drawing)
+
+### TODO JS
+- JSX
 
 ### TODO THEN
 

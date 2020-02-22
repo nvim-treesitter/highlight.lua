@@ -6,8 +6,7 @@ local has = nvim.has
 local exists = nvim.exists
 local echo_err = nvim.echo_err
 
-local define_colors = require 'lib/color_utils'.define_colors
-local attach_to_buffer = require 'lib/runner'.attach_to_buffer
+local init_ts_parser = require 'lib/runner'.init_ts_parser
 
 if not has('termguicolors') then
     echo_err('termguicolors must be set to use this plugin')
@@ -73,6 +72,24 @@ local filetypes = {
 
 local buffer_handles = {}
 
+local function define_colors(group_colors, color_lang)
+    for group, data in pairs(group_colors) do
+        local fg = " guifg=".. (data.fg or "NONE")
+        local bg = " guibg=".. (data.bg or "NONE")
+        local gui = " gui=".. (data.gui or "NONE")
+        vim.api.nvim_command('hi '..color_lang..group.. gui.. bg.. fg)
+    end
+end
+
+local function on_detach(buf)
+    for i, handle in pairs(buffer_handles) do
+        if buf == handle then
+            table.remove(buffer_handles, i)
+            break
+        end
+    end
+end
+
 local function attach()
     local buf = api.nvim_win_get_buf(0)
 
@@ -91,29 +108,20 @@ local function attach()
 
     -- TODO: check if parser exists
     if get_attr ~= nil then
-        api.nvim_buf_clear_namespace(buf, -1, 0, -1) -- doesnt seem to work
+        api.nvim_command('setlocal syntax=off') -- reset the syntax and use only our api
+        api.nvim_buf_clear_namespace(buf, -1, 0, -1)
 
         local attributes = get_attr(colors)
         define_colors(attributes.highlight_groups, attributes.color_lang)
 
-        attach_to_buffer(buf, attributes)
-        table.insert(buffer_handles, buf)
+        local update_highlight = init_ts_parser(buf, attributes)
+
+        local has_attached = vim.api.nvim_buf_attach(buf, 0, {
+            on_detach = on_detach,
+            on_lines = update_highlight
+        })
+        if has_attached then table.insert(buffer_handles, buf) end
     end
 end
 
-local function detach()
-    local buf = api.nvim_win_get_buf(0)
-
-    for i, handle in pairs(buffer_handles) do
-        if buf == handle then
-            -- api.nvim_buf_detach(buf)
-            table.remove(buffer_handles, i)
-            break
-        end
-    end
-end
-
-return {
-    attach = attach,
-    detach = detach
-}
+return { attach = attach }
