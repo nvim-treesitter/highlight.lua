@@ -11,8 +11,15 @@ It can be used by those who need better syntax coloring in their neovim environm
 
 ### Notice
 
-- requires neovim v0.5
-- Is usable in the current state to TEST and develop (only js filetypes are supported ATM)
+- Requires neovim v0.5
+- Is usable in the current state only to test and experiment 
+- Only js filetypes are supported ATM, but you can easily implement your own handlers
+- The plugin is under heavy development, it might change a lot or break things.
+- Even though its only to experiment while the neovim team is working on a better api, i still wish people to see what can be done with the treesitter API
+
+### Screenshot
+
+![alt text](.github/highlight.png?raw=true "javascript highlight")
 
 ### TODO
 
