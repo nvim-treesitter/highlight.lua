@@ -3,7 +3,9 @@ if exists('g:loaded_highlight') | finish | endif
 let s:save_cpo = &cpo
 set cpo&vim
 
-au BufWinEnter * lua require 'highlight'.attach()
+if has('nvim-0.5')
+    au BufWinEnter * lua require 'highlight'.attach()
+endif
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

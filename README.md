@@ -23,18 +23,18 @@ It can be used by those who need better syntax coloring in their neovim environm
 
 ### TODO
 
-- detect if parser exists
+- command to handle parser download / build
 - find a way to get all the tokens returned by a parser easily (so we should not do it by hand)
 - find a way to display properly syntax errors (not working ATM)
-- option / command to disable the plugin (can get very slow on huge files)
-- command to handle parser download / build
-- init colors for languages only once
-- handle filetype in a better way
+- option / command to disable the plugin (provide detach function)
+- should provide a better default colorscheme in case neovim terminal colors are not set
+- better filetype handling
 - provide docs
 
 ### TODO Performance
 
 - highlighting should not block the UI on large files.
+- updating the buffer should not update the whole file
 
 ### Supported Languages
 |language|support
@@ -52,7 +52,3 @@ It can be used by those who need better syntax coloring in their neovim environm
 |Html|None|
 |Css|None|
 |Php|None|
-|JSX|None|
-|JSX|None|
-|JSX|None|
-

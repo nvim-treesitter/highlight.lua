@@ -13,8 +13,12 @@ local function echo_err(msg)
     return api.nvim_command('echoerr '..msg)
 end
 
-local function get(var)
-    return api.nvim_get_var(var)
+local function get(var, fallback)
+    if exists(var) then
+        return api.nvim_get_var(var)
+    else
+        return fallback
+    end
 end
 
 return {
