@@ -30,17 +30,29 @@ It can be used by those who need better syntax coloring in their neovim environm
 - command to handle parser download / build
 - init colors for languages only once
 - handle filetype in a better way
-
-### TODO PERF
-
-- try to do multithreading with luv callbacks instead of doing async rendering (doesnt work great)
-- implement async rendering correctly (right now its not really great, still blocking when drawing)
-
-### TODO JS
-- JSX
-
-### TODO THEN
-
 - provide docs
-- get people invested to support more languages
+
+### TODO Performance
+
+- highlighting should not block the UI on large files.
+
+### Supported Languages
+|language|support
+|---|---|
+|Javascript|Partial (60%)|
+|Jsx|None|
+|Typescript/tsx|None|
+|Rust|None|
+|Lua|None|
+|C|None|
+|C++|None|
+|Python|None|
+|Ruby|None|
+|Go|None|
+|Html|None|
+|Css|None|
+|Php|None|
+|JSX|None|
+|JSX|None|
+|JSX|None|
 

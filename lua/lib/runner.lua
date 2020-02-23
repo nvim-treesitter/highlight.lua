@@ -1,3 +1,5 @@
+local luv = vim.loop
+
 local function get_highlighter(buf, definitions, color_lang)
     return function(node)
         local node_type = node:type()
@@ -43,8 +45,8 @@ end
 local function get_tree_runner(highlight)
 
     local function run_tree(node)
-        -- if not node:named() then highlight(node) end
         highlight(node)
+
         local children = node:child_count()
         if children == 0 then return end
 
@@ -64,9 +66,7 @@ local function colorize_buffer(parser, run_tree)
     run_tree(root)
 end
 
-local luv = vim.loop
-
-local function setTimeout(timeout, callback)
+local function set_timeout(timeout, callback)
   local timer = luv.new_timer()
   timer:start(timeout, 0, function ()
     timer:stop()
@@ -76,28 +76,19 @@ local function setTimeout(timeout, callback)
   return timer
 end
 
-local function clearInterval(timer)
-  timer:stop()
-  timer:close()
-end
-
 local TIMEOUT = 50
 
 local function get_update_highlight(parser, run_tree)
     local running = false
 
-    return function()
+    return function(_, buf)
         if running then return end
-        running = true
 
+        running = true
         local tree = parser:parse()
         local root = tree:root()
 
-        -- TODO: not sure timeout is a good way to do this
-        -- the ui will be kind of weird to look at because the cursor
-        -- will shake a little and its kind of painful to watch
-        local timer = setTimeout(TIMEOUT, vim.schedule_wrap(function()
-            -- TODO: not sure we want to clear the namespace
+        local timer = set_timeout(TIMEOUT, vim.schedule_wrap(function()
             vim.api.nvim_buf_clear_namespace(buf, -1, 0, -1)
             run_tree(root)
             running = false
@@ -116,6 +107,4 @@ local function init_ts_parser(buf, attributes)
     return get_update_highlight(parser, run_tree)
 end
 
-return {
-    init_ts_parser = init_ts_parser
-}
+return { init_ts_parser = init_ts_parser }
