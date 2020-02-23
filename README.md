@@ -10,10 +10,9 @@ It can be used by those who need better syntax coloring in their neovim environm
 
 - Requires neovim v0.5
 - Is usable in the current state only to test and experiment 
-- Only js filetypes are supported ATM, but you can easily implement your own handlers
+- Only js filetypes are supported ATM
 - The plugin is under heavy development, it might change a lot or break things.
 - Even though its only to experiment while the neovim team is working on a better api, i still wish people to see what can be done with the treesitter API
-- certain grammars are huge, it is hard to implement by hand, but you can get the grammar by building a treesitter repo and looking at `src/node_types.json` and `src/grammar.json`
 
 ### Screenshot
 
@@ -21,8 +20,8 @@ It can be used by those who need better syntax coloring in their neovim environm
 
 ### TODO
 
+- refactor using query based highlight (.scm files are ready)
 - command to handle parser download / build
-- find a way to display properly syntax errors (not working ATM)
 - option / command to disable the plugin (provide detach function)
 - should provide a better default colorscheme in case neovim terminal colors are not set
 - option to disable some languages
