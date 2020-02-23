@@ -1,7 +1,4 @@
-local PARSER_LANG = 'javascript'
-local COLOR_LANG = 'Js'
-
-function setup_groups(colors)
+local function setup_groups(colors)
    return {
        Function = { fg = colors.cyan, gui = 'italic' },
        Comment = { fg = colors.comment_grey, gui = 'italic' },
@@ -32,13 +29,14 @@ function setup_groups(colors)
    }
 end
 
-return {
-    get_attributes = function(colors)
-        return {
-            highlight_groups = setup_groups(colors),
-            parser_lang = PARSER_LANG,
-            color_lang = COLOR_LANG
-        }
-    end
-}
+local PARSER_LANG = 'javascript'
+local COLOR_LANG = 'Js'
+
+return function(colors)
+    return {
+        highlight_groups = setup_groups(colors),
+        parser_lang = PARSER_LANG,
+        color_lang = COLOR_LANG
+    }
+end
 

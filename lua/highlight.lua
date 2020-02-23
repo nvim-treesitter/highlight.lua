@@ -41,7 +41,6 @@ local function setup()
         local query = get_query(attributes.parser_lang)
         if not query then return end
 
-        print(query)
         vim.treesitter.TSHighlighter.new(query, buf, attributes.parser_lang)
         local has_attached = vim.api.nvim_buf_attach(buf, 0, { on_detach = on_detach })
         if has_attached then table.insert(BUF_HANDLES, buf) end
