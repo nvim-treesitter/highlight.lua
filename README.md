@@ -1,12 +1,9 @@
 # Highlight.lua - Neovim
 ## A Dynamic Syntax Highlighter Using TreeSitter Written In Lua
 
-This plugins aims at making syntax highlighting in neovim better.
-
-It uses neovim's treesitter api to provide color definition for languages that have available parsers.
-
-The main goal is to provide a solid example on how to use this library.
-
+This plugins aims at making syntax highlighting in neovim better. \
+It uses neovim's treesitter api to provide color definition for languages that have available parsers. \
+The main goal is to provide a solid example on how to use this library. \
 It can be used by those who need better syntax coloring in their neovim environment.
 
 ### Notice
@@ -28,6 +25,7 @@ It can be used by those who need better syntax coloring in their neovim environm
 - find a way to display properly syntax errors (not working ATM)
 - option / command to disable the plugin (provide detach function)
 - should provide a better default colorscheme in case neovim terminal colors are not set
+- option to disable some languages
 - better filetype handling
 - provide docs
 

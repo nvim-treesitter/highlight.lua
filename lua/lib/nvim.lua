@@ -9,8 +9,12 @@ local function exists(var)
     return fn.exists(var) == 1
 end
 
-local function echo_err(msg)
-    return api.nvim_command('echoerr '..msg)
+local function echo_err(err)
+    if err ~= nil then
+        api.nvim_command('echohl ErrorMsg')
+        api.nvim_command('echomsg "'..err..'"')
+        api.nvim_command('echohl None')
+    end
 end
 
 local function get(var, fallback)
