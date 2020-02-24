@@ -11,6 +11,8 @@ end
 local parser_cmd = require 'lib/parser'
 local has_parser = parser_cmd.has_parser
 
+local install_parser = require 'lib/install'.install_parser
+
 local init_ts_parser = require 'lib/runner'.init_ts_parser
 local BUF_HANDLES = {}
 
@@ -56,4 +58,7 @@ local function attach()
     end
 end
 
-return { attach = attach }
+return {
+    attach = attach;
+    install_parser = install_parser;
+}

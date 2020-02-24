@@ -1,13 +1,15 @@
-local echo_err = require 'lib/nvim'.echo_err
+local nvim = require 'lib/nvim'
+local err_msg = nvim.err_msg
+local list_runtime = nvim.list_runtime
 
 local function has_parser(lang)
-    for path in string.gmatch(package.path, '[^;]*') do
-        local parser = string.sub(path, 0, -10)..'parser/'..lang..'.so'
+    for _, path in pairs(list_runtime()) do
+        local parser = path..'/parser/'..lang..'.so'
         if vim.loop.fs_access(parser, 'RX') then
             return true
         end
     end
-    echo_err('Did not find parser for language `' .. lang ..'`. Please run `:InstallParser '..lang..'`')
+    echo_err('Did not find parser for language `' .. lang ..'`. Please run `:InstallTSParser '..lang..'`')
     return false
 end
 
