@@ -1,11 +1,11 @@
 local nvim = require 'lib/nvim'
 local get = nvim.get
 local has = nvim.has
-local echo_err = nvim.echo_err
+local err_msg = nvim.err_msg
 
 -- TODO: has_parser() should handle path for windows to enable plugin on windows
 if has('win32') then
-    echo_err('windows is not supported at the moment')
+    err_msg('windows is not supported at the moment')
     return false
 end
 

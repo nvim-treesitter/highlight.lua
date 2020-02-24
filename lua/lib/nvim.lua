@@ -1,6 +1,13 @@
 local fn = vim.fn
 local api = vim.api
 
+local list_runtime = api.nvim_list_runtime_paths
+local system = fn.system
+
+local function executable(ex)
+    return fn.executable(ex) == 1
+end
+
 local function has(var)
     return fn.has(var) == 1
 end
@@ -9,7 +16,7 @@ local function exists(var)
     return fn.exists(var) == 1
 end
 
-local function echo_err(err)
+local function err_msg(err)
     if err ~= nil then
         api.nvim_command('echohl ErrorMsg')
         api.nvim_command('echomsg "'..err..'"')
@@ -29,5 +36,8 @@ return {
     has = has;
     exists = exists;
     get = get;
-    echo_err = echo_err;
+    err_msg = err_msg;
+    executable = executable;
+    list_runtime = list_runtime;
+    system = system;
 }

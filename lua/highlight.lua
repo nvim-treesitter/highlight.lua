@@ -9,6 +9,8 @@ local parser_cmd = require 'lib/parser'
 local has_parser = parser_cmd.has_parser
 local get_query = parser_cmd.get_query
 
+local install_parser = require 'lib/install'.install_parser
+
 local BUF_HANDLES = {}
 
 local function on_detach(buf)
@@ -47,4 +49,7 @@ local function setup()
     end
 end
 
-return { setup = setup }
+return {
+    setup = setup;
+    install_parser = install_parser;
+}
