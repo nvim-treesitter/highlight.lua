@@ -9,7 +9,7 @@ local function has_parser(lang)
             return true
         end
     end
-    echo_err('Did not find parser for language `' .. lang ..'`. Please run `:InstallTSParser '..lang..'`')
+    err_msg('Did not find parser for language `' .. lang ..'`. Please run `:InstallTSParser '..lang..'`')
     return false
 end
 
