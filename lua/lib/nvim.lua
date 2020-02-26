@@ -2,6 +2,7 @@ local fn = vim.fn
 local api = vim.api
 
 local list_runtime = api.nvim_list_runtime_paths
+local get_runtime_file = api.nvim_get_runtime_file
 local system = fn.system
 
 local function executable(ex)
@@ -40,4 +41,5 @@ return {
     executable = executable;
     list_runtime = list_runtime;
     system = system;
+    get_runtime_file = get_runtime_file;
 }

@@ -1,6 +1,6 @@
 local nvim = require 'lib/nvim'
 local err_msg = nvim.err_msg
-local list_runtime = nvim.list_runtime
+local get_runtime_file = nvim.get_runtime_file
 
 local function read_scm(path)
     local f = io.open(path, "rb")
@@ -11,27 +11,25 @@ local function read_scm(path)
 end
 
 local function get_query(lang)
-    for path in string.gmatch(package.path, '[^;]*') do
-        local parser = string.sub(path, 0, -10)..'lua/syntax/'..lang..'.scm'
-        if vim.loop.fs_access(parser, 'R') then
-            return read_scm(parser)
-        end
+    local file = get_runtime_file('lua/syntax/'..lang..'.scm', false)[1]
+
+    if not file or not vim.loop.fs_access(file, 'R') then
+        err_msg('Did not find query for language `' .. lang ..'`')
+        return nil
     end
 
-    echo_err('Did not find query for language `' .. lang)
-    return nil
+    return read_scm(file)
 end
 
 local function has_parser(lang)
-    for _, path in pairs(list_runtime()) do
-        local parser = path..'/parser/'..lang..'.so'
-        if vim.loop.fs_access(parser, 'RX') then
-            return true
-        end
+    local parser = get_runtime_file('parser/'..lang..'.so', false)[1]
+
+    if not parser or not vim.loop.fs_access(parser, 'RX') then
+        err_msg('Did not find parser for language `' .. lang ..'`. Please run `:InstallTSParser '..lang..'`')
+        return false
     end
 
-    err_msg('Did not find parser for language `' .. lang ..'`. Please run `:InstallTSParser '..lang..'`')
-    return false
+    return true
 end
 
 return {
