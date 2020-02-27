@@ -6,6 +6,8 @@ It uses neovim's treesitter api to provide color definition for languages that h
 The main goal is to provide a solid example on how to use this library. \
 It can be used by those who need better syntax coloring in their neovim environment.
 
+### Development of this plugin will continue when the treesitter api becomes more stable
+
 ### Notice
 
 - Requires neovim v0.5
@@ -27,18 +29,12 @@ The command does not work on windows and might not work on every OS. It depends 
 
 ### TODO
 
-- Should provide a better default colorscheme in case neovim terminal colors are not set
-- Option / command to disable the plugin (provide detach function)
-- Refactor using query based highlight (.scm files are ready)
+- Should warn the user to setup some colors for this plugin to work in case `g:terminal_color_[0-15]` are not defined
+- Option to disable the plugin on some languages
+- Option / command to disable the plugin
 - Command to list available languages
-- Option to disable some languages
 - Better filetype handling
 - Provide docs
-
-### TODO Performance
-
-- Highlighting should not block the UI on large files.
-- Updating the buffer should not update the whole file
 
 ### Supported Languages
 |language|support
