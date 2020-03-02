@@ -18,6 +18,10 @@ local REPOS = {
     javascript = {
         url = "https://github.com/tree-sitter/tree-sitter-javascript",
         files = "src/parser.c src/scanner.c",
+    },
+    c = {
+        url = "https://github.com/tree-sitter/tree-sitter-c",
+        files = "src/parser.c"
     }
 }
 
