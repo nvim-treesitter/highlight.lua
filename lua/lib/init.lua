@@ -50,7 +50,7 @@ local colors = {
 }
 
 local filetypes = {
-    js = require 'syntax/javascript'.get_attributes(colors)
+    js = require 'syntax/javascript'(colors)
 }
 
 local function define_colors(group_colors, color_lang)

@@ -5,7 +5,7 @@ endif
 let s:save_cpo = &cpo
 set cpo&vim
 
-au BufWinEnter * lua require 'highlight'.attach()
+au BufWinEnter * lua require 'highlight'.setup()
 
 function! InstallParser(lang)
     call luaeval("require 'highlight'.install_parser(_A)", a:lang)
